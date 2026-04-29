@@ -78,9 +78,9 @@ class PublicController extends Controller
             return response()->json([]);
 
         $temples = Temple::where('name', 'like', "%{$query}%")
-            ->orWhere('location', 'like', "%{$query}%")
-            ->take(5)
-            ->get(['id', 'name', 'location', 'photos']);
+    ->orWhere('location', 'like', "%{$query}%")
+    ->take(5)
+    ->get(['id', 'slug', 'name', 'location', 'photos']);
 
         $hotels = Hotel::where('name', 'like', "%{$query}%")
             ->with('temple')
