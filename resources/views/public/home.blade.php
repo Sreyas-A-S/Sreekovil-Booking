@@ -118,7 +118,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 @foreach($temples as $temple)
-                    <a href="{{ route('public.temple.show', $temple) }}"
+                    <a href="{{ route('public.temple.show', ['temple' => $temple->slug]) }}"
                         class="group relative bg-white rounded-[2.5rem] overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-700 animate-slide-up border border-slate-100">
                         <div class="aspect-video relative overflow-hidden">
                             @if($temple->photos && count($temple->photos) > 0)
