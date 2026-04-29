@@ -88,7 +88,7 @@
         #preloader {
             position: fixed;
             inset: 0;
-            background: #ffffff;
+            background: #2d1005; /* Matches bg-orange-950 */
             z-index: 9999;
             display: flex;
             align-items: center;
@@ -104,26 +104,16 @@
         .preloader-content {
             position: relative;
             display: flex;
-            flex-col;
+            flex-direction: column;
             align-items: center;
             gap: 2rem;
         }
 
         .preloader-logo {
-            height: 80px;
+            height: 60px;
             width: auto;
             animation: pulse-logo 3s ease-in-out infinite;
             filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.4));
-        }
-
-        .preloader-mandala {
-            position: absolute;
-            inset: -100px;
-            background-image: url("/assets/mandala.png");
-            background-size: contain;
-            background-repeat: no-repeat;
-            opacity: 0.15;
-            animation: rotate-mandala 20s linear infinite;
         }
 
         @keyframes pulse-logo {
@@ -139,16 +129,6 @@
                 filter: drop-shadow(0 0 40px rgba(212, 175, 55, 0.6));
             }
         }
-
-        @keyframes rotate-mandala {
-            from {
-                transform: rotate(0deg);
-            }
-
-            to {
-                transform: rotate(360deg);
-            }
-        }
     </style>
 </head>
 
@@ -156,8 +136,7 @@
     <!-- Divine Preloader -->
     <div id="preloader">
         <div class="preloader-content">
-            <div class="preloader-mandala"></div>
-            <img src="{{ asset('assets/logo.png') }}" alt="Sreekovil" class="preloader-logo">
+            <img src="{{ asset('assets/sreekovil-white-logo.png') }}" alt="Sreekovil" class="preloader-logo">
         </div>
     </div>
     <!-- Navigation -->

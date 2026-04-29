@@ -27,7 +27,7 @@
                 </p>
 
                 <!-- Search Bar -->
-                <div class="w-full max-w-3xl mt-10 animate-slide-up" style="animation-delay: 0.4s">
+                <div class="w-full max-w-3xl mt-10 animate-slide-up relative z-30" style="animation-delay: 0.4s">
                     <form action="{{ route('public.temple.index') }}" method="GET" class="relative group">
                         <div
                             class="absolute inset-0 bg-saffron-500/20 blur-2xl group-hover:bg-saffron-500/30 transition-all duration-500 rounded-full">
