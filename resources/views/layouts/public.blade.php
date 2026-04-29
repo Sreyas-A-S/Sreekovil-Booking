@@ -278,7 +278,7 @@
             if (!container) return;
 
             const suggestionsDiv = document.createElement('div');
-            suggestionsDiv.className = 'absolute top-full left-0 right-0 mt-4 bg-white rounded-[2rem] shadow-2xl border border-orange-50 overflow-hidden z-[200] opacity-0 translate-y-4 pointer-events-none transition-all duration-300';
+            suggestionsDiv.className = 'absolute top-full left-0 right-0 mt-4 bg-white/95 backdrop-blur-xl rounded-[2.5rem] shadow-[0_30px_100px_rgba(0,0,0,0.1),0_10px_40px_rgba(255,153,51,0.05)] border border-orange-100/50 overflow-hidden z-[200] opacity-0 translate-y-4 pointer-events-none transition-all duration-300';
             suggestionsDiv.id = 'search-suggestions-' + Math.random().toString(36).substr(2, 9);
             container.appendChild(suggestionsDiv);
 
@@ -294,18 +294,21 @@
                 }
 
                 timeout = setTimeout(async () => {
+                    renderLoading(suggestionsDiv);
+                    showSuggestions(suggestionsDiv);
+
                     try {
                         const response = await fetch(`{{ route('public.search.suggestions') }}?query=${encodeURIComponent(query)}`);
                         const suggestions = await response.json();
 
                         if (suggestions.length > 0) {
                             renderSuggestions(suggestionsDiv, suggestions);
-                            showSuggestions(suggestionsDiv);
                         } else {
-                            hideSuggestions(suggestionsDiv);
+                            renderNoResults(suggestionsDiv);
                         }
                     } catch (error) {
                         console.error('Suggestions error:', error);
+                        hideSuggestions(suggestionsDiv);
                     }
                 }, 300);
             });
@@ -318,17 +321,62 @@
             });
         });
 
+        function renderLoading(div) {
+            div.innerHTML = `
+                <div class="px-6 py-12 text-center space-y-4">
+                    <div class="relative w-16 h-16 mx-auto">
+                        <div class="absolute inset-0 rounded-full border-4 border-orange-50"></div>
+                        <div class="absolute inset-0 rounded-full border-4 border-t-saffron-500 animate-spin"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <i data-lucide="sparkles" class="w-6 h-6 text-saffron-500 animate-pulse"></i>
+                        </div>
+                    </div>
+                    <p class="text-[9px] text-orange-400 font-black uppercase tracking-[0.4em] animate-pulse">Seeking Divine Connections...</p>
+                </div>
+            `;
+            if (window.lucide) {
+                lucide.createIcons();
+            }
+        }
+
+        function renderNoResults(div) {
+            div.innerHTML = `
+                <div class="px-6 py-12 text-center space-y-4">
+                    <div class="w-16 h-16 rounded-3xl bg-orange-50 flex items-center justify-center mx-auto text-orange-200">
+                        <i data-lucide="search-x" class="w-8 h-8"></i>
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-sm font-bold text-orange-950 uppercase tracking-widest">No Sacred Matches</p>
+                        <p class="text-[10px] text-orange-400 font-medium italic">Try searching for other temples or cities</p>
+                    </div>
+                </div>
+            `;
+            if (window.lucide) {
+                lucide.createIcons();
+            }
+        }
+
         function renderSuggestions(div, data) {
             div.innerHTML = data.map(item => `
-                <a href="${item.url}" class="group flex items-center gap-4 px-6 py-4 hover:bg-orange-50 transition-colors border-b border-orange-50 last:border-0">
-                    <div class="w-10 h-10 rounded-xl ${item.type === 'temple' ? 'bg-saffron-50 text-saffron-600' : 'bg-gold-50 text-gold-600'} flex items-center justify-center shrink-0">
-                        <i data-lucide="${item.type === 'temple' ? 'sun' : 'hotel'}" class="w-5 h-5"></i>
+                <a href="${item.url}" class="group flex items-center gap-4 px-6 py-4 hover:bg-orange-50/50 transition-all border-b border-orange-50 last:border-0">
+                    <div class="w-14 h-14 rounded-2xl overflow-hidden shrink-0 shadow-sm group-hover:shadow-md transition-shadow">
+                        ${item.image ? 
+                            `<img src="${item.image}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">` :
+                            `<div class="w-full h-full ${item.type === 'temple' ? 'bg-saffron-50 text-saffron-600' : 'bg-gold-50 text-gold-600'} flex items-center justify-center">
+                                <i data-lucide="${item.type === 'temple' ? 'sun' : 'hotel'}" class="w-6 h-6"></i>
+                            </div>`
+                        }
                     </div>
                     <div class="flex-1 min-w-0 text-left">
+                        <div class="flex items-center gap-2 mb-0.5">
+                            <span class="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md ${item.type === 'temple' ? 'bg-saffron-100 text-saffron-700' : 'bg-gold-100 text-gold-700'}">${item.type}</span>
+                        </div>
                         <h5 class="text-sm font-bold text-orange-950 group-hover:text-saffron-600 transition-colors truncate">${item.title}</h5>
-                        <p class="text-[10px] text-orange-400 font-medium uppercase tracking-widest">${item.subtitle}</p>
+                        <p class="text-[10px] text-orange-400 font-medium uppercase tracking-widest truncate">${item.subtitle}</p>
                     </div>
-                    <i data-lucide="arrow-right" class="w-4 h-4 text-orange-200 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all"></i>
+                    <div class="w-8 h-8 rounded-full bg-orange-50 flex items-center justify-center opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
+                        <i data-lucide="arrow-right" class="w-4 h-4 text-saffron-600"></i>
+                    </div>
                 </a>
             `).join('');
 

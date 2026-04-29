@@ -23,7 +23,7 @@
         @endif
 
         <div class="bg-white rounded-[2.5rem] shadow-xl border border-maroon-100 overflow-hidden">
-            <form action="{{ route('admin.settings.update') }}" method="POST" class="p-10 space-y-10">
+            <form action="{{ route('admin.settings.update') }}" method="POST" enctype="multipart/form-data" class="p-10 space-y-12">
                 @csrf
 
                 <!-- Homepage Music Section -->
@@ -53,13 +53,76 @@
                             @endforeach
                         </select>
                     </div>
+                </div>
 
-                    <div class="p-6 bg-saffron-50 rounded-2xl border border-saffron-100 flex items-start gap-4">
-                        <i data-lucide="info" class="w-5 h-5 text-saffron-600 mt-1"></i>
-                        <p class="text-xs text-saffron-800 leading-relaxed italic">
-                            The selected song will automatically play in the background when visitors enter the home portal.
-                            Note: Due to browser policies, an initial user interaction might be required to start playback.
-                        </p>
+                <!-- Hero Highlights Section -->
+                <div class="pt-10 border-t border-maroon-50 space-y-8">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-saffron-500 text-white flex items-center justify-center shadow-lg">
+                            <i data-lucide="bar-chart-3" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-maroon-900 font-display uppercase tracking-wider">Hero
+                                Highlights</h3>
+                            <p class="text-xs text-maroon-500 italic">Manage the stats bar or replace it with a majestic banner</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-4">
+                            <label class="block text-sm font-bold text-maroon-700 uppercase tracking-widest ml-1">Display Mode</label>
+                            <div class="flex gap-4">
+                                <label class="flex-1 cursor-pointer">
+                                    <input type="radio" name="hero_stats_mode" value="text" class="peer hidden" {{ $heroStatsMode == 'text' ? 'checked' : '' }}>
+                                    <div class="p-4 rounded-2xl bg-maroon-50 border-2 border-transparent peer-checked:border-saffron-500 peer-checked:bg-white transition-all text-center">
+                                        <i data-lucide="align-left" class="w-5 h-5 mx-auto mb-2 text-maroon-400 peer-checked:text-saffron-600"></i>
+                                        <span class="text-[10px] font-bold uppercase tracking-widest block">Text Stats</span>
+                                    </div>
+                                </label>
+                                <label class="flex-1 cursor-pointer">
+                                    <input type="radio" name="hero_stats_mode" value="image" class="peer hidden" {{ $heroStatsMode == 'image' ? 'checked' : '' }}>
+                                    <div class="p-4 rounded-2xl bg-maroon-50 border-2 border-transparent peer-checked:border-saffron-500 peer-checked:bg-white transition-all text-center">
+                                        <i data-lucide="image" class="w-5 h-5 mx-auto mb-2 text-maroon-400 peer-checked:text-saffron-600"></i>
+                                        <span class="text-[10px] font-bold uppercase tracking-widest block">Single Image</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <label class="block text-sm font-bold text-maroon-700 uppercase tracking-widest ml-1">Banner Image (Mode: Image)</label>
+                            <div class="relative group">
+                                <input type="file" name="hero_stats_image" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                                <div class="p-4 rounded-2xl bg-maroon-50 border-2 border-dashed border-maroon-200 group-hover:border-saffron-400 transition-all text-center">
+                                    @if($heroStatsImage)
+                                        <img src="{{ asset('storage/' . $heroStatsImage) }}" class="h-12 w-auto mx-auto rounded-lg mb-2 shadow-sm">
+                                    @else
+                                        <i data-lucide="upload-cloud" class="w-6 h-6 mx-auto mb-2 text-maroon-300"></i>
+                                    @endif
+                                    <span class="text-[10px] font-bold text-maroon-400 uppercase tracking-widest block">Click to Upload Banner</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 p-8 bg-maroon-50 rounded-[2rem] border border-maroon-100">
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black text-maroon-400 uppercase tracking-[0.2em] ml-1">Temples</label>
+                            <input type="text" name="stats_temples" value="{{ $statsTemples }}" class="w-full bg-white border-0 rounded-xl p-3 text-sm font-bold text-maroon-900 focus:ring-2 focus:ring-saffron-500">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black text-maroon-400 uppercase tracking-[0.2em] ml-1">Hotels</label>
+                            <input type="text" name="stats_hotels" value="{{ $statsHotels }}" class="w-full bg-white border-0 rounded-xl p-3 text-sm font-bold text-maroon-900 focus:ring-2 focus:ring-saffron-500">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black text-maroon-400 uppercase tracking-[0.2em] ml-1">Devotees</label>
+                            <input type="text" name="stats_devotees" value="{{ $statsDevotees }}" class="w-full bg-white border-0 rounded-xl p-3 text-sm font-bold text-maroon-900 focus:ring-2 focus:ring-saffron-500">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black text-maroon-400 uppercase tracking-[0.2em] ml-1">Support</label>
+                            <input type="text" name="stats_support" value="{{ $statsSupport }}" class="w-full bg-white border-0 rounded-xl p-3 text-sm font-bold text-maroon-900 focus:ring-2 focus:ring-saffron-500">
+                        </div>
                     </div>
                 </div>
 

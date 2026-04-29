@@ -16,7 +16,24 @@ class PublicController extends Controller
         $temples = Temple::latest()->take(6)->get();
         $homepageSongId = Setting::getValue('homepage_song_id');
         $homepageSong = $homepageSongId ? Song::find($homepageSongId) : null;
-        return view('public.home', compact('temples', 'homepageSong'));
+
+        $heroStatsMode = Setting::getValue('hero_stats_mode', 'text');
+        $heroStatsImage = Setting::getValue('hero_stats_image');
+        $statsTemples = Setting::getValue('stats_temples', '50+');
+        $statsHotels = Setting::getValue('stats_hotels', '200+');
+        $statsDevotees = Setting::getValue('stats_devotees', '10k+');
+        $statsSupport = Setting::getValue('stats_support', '24/7');
+
+        return view('public.home', compact(
+            'temples', 
+            'homepageSong', 
+            'heroStatsMode', 
+            'heroStatsImage', 
+            'statsTemples', 
+            'statsHotels', 
+            'statsDevotees', 
+            'statsSupport'
+        ));
     }
 
     public function templeIndex(Request $request)
@@ -63,7 +80,7 @@ class PublicController extends Controller
         $temples = Temple::where('name', 'like', "%{$query}%")
             ->orWhere('location', 'like', "%{$query}%")
             ->take(5)
-            ->get(['id', 'name', 'location']);
+            ->get(['id', 'name', 'location', 'photos']);
 
         $hotels = Hotel::where('name', 'like', "%{$query}%")
             ->with('temple')
@@ -72,20 +89,34 @@ class PublicController extends Controller
 
         $results = [];
         foreach ($temples as $temple) {
+            $image = null;
+            if ($temple->photos && count($temple->photos) > 0) {
+                $photo = $temple->photos[0];
+                $image = str_starts_with($photo, 'http') ? $photo : (str_starts_with($photo, 'assets/') ? asset($photo) : asset('storage/' . $photo));
+            }
+
             $results[] = [
                 'type' => 'temple',
                 'title' => $temple->name,
                 'subtitle' => $temple->location,
-                'url' => route('public.temple.show', $temple)
+                'url' => route('public.temple.show', $temple),
+                'image' => $image
             ];
         }
 
         foreach ($hotels as $hotel) {
+            $image = null;
+            if ($hotel->photos && count($hotel->photos) > 0) {
+                $photo = $hotel->photos[0];
+                $image = str_starts_with($photo, 'http') ? $photo : (str_starts_with($photo, 'assets/') ? asset($photo) : asset('storage/' . $photo));
+            }
+
             $results[] = [
                 'type' => 'hotel',
                 'title' => $hotel->name,
                 'subtitle' => 'Stay near ' . $hotel->temple->name,
-                'url' => route('public.hotel.show', $hotel)
+                'url' => route('public.hotel.show', $hotel),
+                'image' => $image
             ];
         }
 

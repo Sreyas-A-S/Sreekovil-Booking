@@ -8,7 +8,7 @@
         </div>
         <div class="absolute inset-0 mandala-overlay opacity-50 mix-blend-overlay"></div>
 
-        <div class="relative z-10 max-w-7xl mx-auto px-6 text-center animate-fade-in">
+        <div class="relative z-30 max-w-7xl mx-auto px-6 text-center animate-fade-in">
             <div class="flex flex-col items-center gap-6">
                 <span
                     class="inline-block px-6 py-2 rounded-full glass border border-gold-500/30 text-gold-400 font-bold text-xs uppercase tracking-[0.4em] mb-4">
@@ -21,13 +21,8 @@
                         class="text-transparent bg-clip-text bg-gradient-to-r from-saffron-400 via-gold-500 to-saffron-500">Divine
                         Wisdom</span>
                 </h1>
-                <p class="max-w-2xl text-maroon-100/70 text-lg md:text-xl font-medium italic mt-4 leading-relaxed">
-                    Connect with the most sacred shrines of India and experience spiritual serenity like never before.
-                    Your pilgrimage, perfectly harmonized with luxury and devotion.
-                </p>
-
                 <!-- Search Bar -->
-                <div class="w-full max-w-3xl mt-10 animate-slide-up relative z-30" style="animation-delay: 0.4s">
+                <div class="w-full max-w-3xl mt-6 animate-slide-up relative z-30" style="animation-delay: 0.4s">
                     <form action="{{ route('public.temple.index') }}" method="GET" class="relative group">
                         <div
                             class="absolute inset-0 bg-saffron-500/20 blur-2xl group-hover:bg-saffron-500/30 transition-all duration-500 rounded-full">
@@ -83,28 +78,32 @@
 
     <!-- Stats / Highlights -->
     <section
-        class="py-12 bg-orange-900/95 backdrop-blur-2xl mx-6 md:mx-auto max-w-6xl -mt-24 relative z-20 rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-12 px-12">
-            <div
-                class="text-center space-y-3 border-r border-white/10 last:border-0 hover:scale-105 transition-transform duration-500">
-                <p class="text-5xl font-black text-saffron-400 font-display italic">50+</p>
-                <p class="text-[11px] text-maroon-200 uppercase font-black tracking-[0.3em]">Divine Temples</p>
+        class="bg-orange-900/95 backdrop-blur-2xl mx-6 md:mx-auto max-w-6xl -mt-24 relative z-20 rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 overflow-hidden min-h-[180px] flex items-center justify-center">
+        @if($heroStatsMode === 'image' && $heroStatsImage)
+            <img src="{{ asset('storage/' . $heroStatsImage) }}" class="w-full h-full object-cover animate-fade-in" alt="Hero Highlights">
+        @else
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-12 px-12 py-12 w-full animate-fade-in">
+                <div
+                    class="text-center space-y-3 border-r border-white/10 last:border-0 hover:scale-105 transition-transform duration-500">
+                    <p class="text-5xl font-black text-saffron-400 font-display italic">{{ $statsTemples }}</p>
+                    <p class="text-[11px] text-maroon-200 uppercase font-black tracking-[0.3em]">Divine Temples</p>
+                </div>
+                <div
+                    class="text-center space-y-3 border-r border-white/10 last:border-0 hover:scale-105 transition-transform duration-500">
+                    <p class="text-5xl font-black text-saffron-400 font-display italic">{{ $statsHotels }}</p>
+                    <p class="text-[11px] text-orange-200 uppercase font-black tracking-[0.3em]">Luxury Stays</p>
+                </div>
+                <div
+                    class="text-center space-y-3 border-r border-white/10 last:border-0 hover:scale-105 transition-transform duration-500">
+                    <p class="text-5xl font-black text-saffron-400 font-display italic">{{ $statsDevotees }}</p>
+                    <p class="text-[11px] text-orange-200 uppercase font-black tracking-[0.3em]">Happy Devotees</p>
+                </div>
+                <div class="text-center space-y-3 last:border-0 hover:scale-105 transition-transform duration-500">
+                    <p class="text-5xl font-black text-saffron-400 font-display italic">{{ $statsSupport }}</p>
+                    <p class="text-[11px] text-orange-200 uppercase font-black tracking-[0.3em]">Sacred Support</p>
+                </div>
             </div>
-            <div
-                class="text-center space-y-3 border-r border-white/10 last:border-0 hover:scale-105 transition-transform duration-500">
-                <p class="text-5xl font-black text-saffron-400 font-display italic">200+</p>
-                <p class="text-[11px] text-orange-200 uppercase font-black tracking-[0.3em]">Luxury Stays</p>
-            </div>
-            <div
-                class="text-center space-y-3 border-r border-white/10 last:border-0 hover:scale-105 transition-transform duration-500">
-                <p class="text-5xl font-black text-saffron-400 font-display italic">10k+</p>
-                <p class="text-[11px] text-orange-200 uppercase font-black tracking-[0.3em]">Happy Devotees</p>
-            </div>
-            <div class="text-center space-y-3 last:border-0 hover:scale-105 transition-transform duration-500">
-                <p class="text-5xl font-black text-saffron-400 font-display italic">24/7</p>
-                <p class="text-[11px] text-orange-200 uppercase font-black tracking-[0.3em]">Sacred Support</p>
-            </div>
-        </div>
+        @endif
     </section>
 
     <!-- Temples Listing -->
