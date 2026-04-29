@@ -4,7 +4,7 @@
     <!-- Hero Section -->
     <section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
         <div class="absolute inset-0 hero-gradient"
-            style="background-image: linear-gradient(to bottom, rgba(255, 153, 51, 0.8), rgba(230, 92, 0, 0.95)), url('https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?q=80&w=2070&auto=format&fit=crop');">
+            style="background-image: linear-gradient(to bottom, rgba(255, 153, 51, 0.6), rgba(230, 92, 0, 0.85)), url('{{ asset('assets/hero-bg.png') }}');">
         </div>
         <div class="absolute inset-0 mandala-overlay opacity-50 mix-blend-overlay"></div>
 
