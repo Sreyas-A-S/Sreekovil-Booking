@@ -153,6 +153,7 @@
     <div id="preloader">
         <div class="preloader-content">
             <img src="{{ asset('assets/sreekovil-white-logo.png') }}" alt="Sreekovil" class="preloader-logo">
+            <p class="preloader-text text-gray-800 font-medium text-sm">Divine Loading...</p>
             <div class="w-12 h-0.5 bg-saffron-500/20 rounded-full relative overflow-hidden">
                 <div class="absolute inset-0 bg-saffron-500 w-1/2 animate-[loading_2s_ease-in-out_infinite]"></div>
             </div>
