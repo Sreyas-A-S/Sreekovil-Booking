@@ -88,12 +88,30 @@
         #preloader {
             position: fixed;
             inset: 0;
-            background: #2d1005; /* Matches bg-orange-950 */
+            background: linear-gradient(135deg, #fffcf5 0%, #fff0e0 100%);
             z-index: 9999;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s;
+            overflow: hidden;
+        }
+
+        #preloader::before {
+            content: '';
+            position: absolute;
+            inset: -100%;
+            background-image: url("/assets/mandala.png");
+            background-size: 800px;
+            background-repeat: repeat;
+            opacity: 0.04;
+            animation: rotate-slow 120s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes rotate-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         #preloader.fade-out {
@@ -107,26 +125,24 @@
             flex-direction: column;
             align-items: center;
             gap: 2rem;
+            z-index: 10;
         }
 
         .preloader-logo {
-            height: 60px;
+            height: 80px;
             width: auto;
             animation: pulse-logo 3s ease-in-out infinite;
-            filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.4));
+            filter: drop-shadow(0 10px 30px rgba(255, 153, 51, 0.2));
         }
 
         @keyframes pulse-logo {
-
-            0%,
-            100% {
+            0%, 100% {
                 transform: scale(1);
-                filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.3));
+                filter: drop-shadow(0 10px 30px rgba(255, 153, 51, 0.15));
             }
-
             50% {
-                transform: scale(1.1);
-                filter: drop-shadow(0 0 40px rgba(212, 175, 55, 0.6));
+                transform: scale(1.05);
+                filter: drop-shadow(0 20px 50px rgba(255, 153, 51, 0.3));
             }
         }
     </style>
@@ -136,9 +152,19 @@
     <!-- Divine Preloader -->
     <div id="preloader">
         <div class="preloader-content">
-            <img src="{{ asset('assets/sreekovil-white-logo.png') }}" alt="Sreekovil" class="preloader-logo">
+            <img src="{{ asset('assets/logo.png') }}" alt="Sreekovil" class="preloader-logo">
+            <div class="w-12 h-0.5 bg-saffron-500/20 rounded-full relative overflow-hidden">
+                <div class="absolute inset-0 bg-saffron-500 w-1/2 animate-[loading_2s_ease-in-out_infinite]"></div>
+            </div>
         </div>
     </div>
+
+    <style>
+        @keyframes loading {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+        }
+    </style>
     <!-- Navigation -->
     <nav class="fixed top-0 left-0 right-0 z-[100] transition-all duration-500 py-6" id="main-nav">
         <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">

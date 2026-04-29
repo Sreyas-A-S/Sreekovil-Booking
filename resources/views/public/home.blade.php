@@ -8,7 +8,7 @@
         </div>
         <div class="absolute inset-0 mandala-overlay opacity-50 mix-blend-overlay"></div>
 
-        <div class="relative z-30 max-w-7xl mx-auto px-6 text-center animate-fade-in">
+        <div class="relative z-30 max-w-7xl mx-auto px-8 md:px-6 text-center animate-fade-in">
             <div class="flex flex-col items-center gap-6">
                 <span
                     class="inline-block px-6 py-2 rounded-full glass border border-gold-500/30 text-gold-400 font-bold text-xs uppercase tracking-[0.4em] mb-4">
@@ -31,9 +31,9 @@
                             class="relative flex items-center p-2 bg-white/10 backdrop-blur-3xl border border-white/20 rounded-full shadow-2xl overflow-hidden group-focus-within:border-saffron-500/50 transition-all">
                             <input type="text" name="search" autocomplete="off"
                                 placeholder="Search temples, hotels, or sacred places..."
-                                class="search-input-suggest flex-1 bg-transparent border-0 text-white placeholder-white/40 focus:ring-0 focus:outline-none outline-none px-8 py-4 text-base md:text-lg font-medium ring-0">
+                                class="search-input-suggest flex-1 bg-transparent border-0 text-white placeholder-white/40 focus:ring-0 focus:outline-none outline-none px-8 py-4 text-sm md:text-lg font-medium ring-0">
                             <button type="submit"
-                                class="px-10 py-4 saffron-gradient text-white font-bold rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all text-xs uppercase tracking-widest">
+                                class="px-6 md:px-10 py-4 saffron-gradient text-white font-bold rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all text-[10px] md:text-xs uppercase tracking-widest">
                                 Search
                             </button>
                         </div>
@@ -78,29 +78,29 @@
 
     <!-- Stats / Highlights -->
     <section
-        class="bg-orange-900/95 backdrop-blur-2xl mx-6 md:mx-auto max-w-6xl -mt-24 relative z-20 rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 overflow-hidden min-h-[180px] flex items-center justify-center">
+        class="bg-orange-900/95 backdrop-blur-2xl mx-4 md:mx-auto max-w-6xl -mt-24 relative z-20 rounded-[2.5rem] md:rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 overflow-hidden min-h-[180px] flex items-center justify-center">
         @if($heroStatsMode === 'image' && $heroStatsImage)
             <img src="{{ asset('storage/' . $heroStatsImage) }}" class="w-full h-full object-cover animate-fade-in" alt="Hero Highlights">
         @else
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-12 px-12 py-12 w-full animate-fade-in">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-12 px-6 md:px-12 py-10 md:py-12 w-full animate-fade-in">
                 <div
                     class="text-center space-y-3 border-r border-white/10 last:border-0 hover:scale-105 transition-transform duration-500">
-                    <p class="text-5xl font-black text-saffron-400 font-display italic">{{ $statsTemples }}</p>
-                    <p class="text-[11px] text-maroon-200 uppercase font-black tracking-[0.3em]">Divine Temples</p>
+                    <p class="text-3xl md:text-5xl font-black text-saffron-400 font-display italic">{{ $statsTemples }}</p>
+                    <p class="text-[9px] md:text-[11px] text-maroon-200 uppercase font-black tracking-[0.3em]">Divine Temples</p>
                 </div>
                 <div
                     class="text-center space-y-3 border-r border-white/10 last:border-0 hover:scale-105 transition-transform duration-500">
-                    <p class="text-5xl font-black text-saffron-400 font-display italic">{{ $statsHotels }}</p>
-                    <p class="text-[11px] text-orange-200 uppercase font-black tracking-[0.3em]">Luxury Stays</p>
+                    <p class="text-3xl md:text-5xl font-black text-saffron-400 font-display italic">{{ $statsHotels }}</p>
+                    <p class="text-[9px] md:text-[11px] text-orange-200 uppercase font-black tracking-[0.3em]">Luxury Stays</p>
                 </div>
                 <div
                     class="text-center space-y-3 border-r border-white/10 last:border-0 hover:scale-105 transition-transform duration-500">
-                    <p class="text-5xl font-black text-saffron-400 font-display italic">{{ $statsDevotees }}</p>
-                    <p class="text-[11px] text-orange-200 uppercase font-black tracking-[0.3em]">Happy Devotees</p>
+                    <p class="text-3xl md:text-5xl font-black text-saffron-400 font-display italic">{{ $statsDevotees }}</p>
+                    <p class="text-[9px] md:text-[11px] text-orange-200 uppercase font-black tracking-[0.3em]">Happy Devotees</p>
                 </div>
                 <div class="text-center space-y-3 last:border-0 hover:scale-105 transition-transform duration-500">
-                    <p class="text-5xl font-black text-saffron-400 font-display italic">{{ $statsSupport }}</p>
-                    <p class="text-[11px] text-orange-200 uppercase font-black tracking-[0.3em]">Sacred Support</p>
+                    <p class="text-3xl md:text-5xl font-black text-saffron-400 font-display italic">{{ $statsSupport }}</p>
+                    <p class="text-[9px] md:text-[11px] text-orange-200 uppercase font-black tracking-[0.3em]">Sacred Support</p>
                 </div>
             </div>
         @endif

@@ -9,11 +9,26 @@ class Temple extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'location', 'photos', 'idle_song_id'];
+    protected $fillable = ['name', 'slug', 'description', 'location', 'photos', 'idle_song_id'];
 
     protected $casts = [
         'photos' => 'array',
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::saving(function ($temple) {
+            if (empty($temple->slug)) {
+                $temple->slug = \Illuminate\Support\Str::slug($temple->name);
+            }
+        });
+    }
 
     public function hotels()
     {

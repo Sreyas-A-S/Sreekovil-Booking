@@ -4,14 +4,18 @@
 
 @section('content')
     <!-- Header -->
-    <section class="relative pt-40 pb-28 overflow-hidden bg-orange-600">
-        <div class="absolute inset-0 mandala-overlay opacity-40 rotate-12 scale-150"></div>
-        <div class="max-w-7xl mx-auto px-6 relative z-10 text-center space-y-4">
-            <p class="text-saffron-400 font-bold text-xs uppercase tracking-[0.4em] animate-fade-in">
+    <section class="relative pt-40 pb-28 flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0"
+            style="background-image: linear-gradient(to bottom, rgba(255, 153, 51, 0.6), rgba(230, 92, 0, 0.85)), url('{{ asset('assets/hero-bg.png') }}'); background-size: cover; background-position: center;">
+        </div>
+        <div class="absolute inset-0 mandala-overlay opacity-30 rotate-12 scale-150 mix-blend-overlay"></div>
+        
+        <div class="max-w-7xl mx-auto px-8 md:px-6 relative z-10 text-center space-y-4">
+            <p class="text-saffron-300 font-bold text-xs uppercase tracking-[0.4em] animate-fade-in drop-shadow-sm">
                 {{ isset($search) && $search ? 'Divine Results' : 'Sacred Collection' }}
             </p>
             <h1
-                class="text-3xl md:text-5xl lg:text-6xl font-black text-white font-display uppercase tracking-widest leading-tight animate-slide-up">
+                class="text-4xl md:text-6xl font-black text-white font-display uppercase tracking-widest leading-tight animate-slide-up drop-shadow-xl">
                 @if(isset($search) && $search)
                     Showing <span
                         class="text-transparent bg-clip-text bg-gradient-to-r from-saffron-400 to-gold-500">"{{ $search }}"</span>
@@ -24,21 +28,22 @@
     </section>
 
     <!-- Search/Filter -->
-    <section class="relative z-20 -mt-10 px-6">
+    <section class="relative z-30 -mt-10 px-8 md:px-6">
         <div class="max-w-3xl mx-auto">
             <form action="{{ route('public.temple.index') }}" method="GET" class="relative group">
                 <div
-                    class="relative flex items-center bg-white rounded-full shadow-2xl border border-maroon-100 overflow-hidden transition-all">
+                    class="absolute inset-0 bg-saffron-500/10 blur-2xl group-hover:bg-saffron-500/20 transition-all duration-500 rounded-full">
+                </div>
+                <div
+                    class="relative flex items-center p-1.5 bg-white/95 backdrop-blur-xl rounded-full shadow-[0_30px_100px_rgba(0,0,0,0.1)] border border-maroon-100/50 overflow-hidden group-focus-within:border-saffron-500/30 transition-all">
                     <input type="text" name="search" value="{{ $search ?? '' }}" autocomplete="off"
                         placeholder="Search temples..."
-                        class="search-input-suggest flex-1 bg-transparent border-0 text-maroon-900 placeholder-maroon-300 focus:ring-0 focus:outline-none outline-none px-8 py-5 text-lg font-medium ring-0">
+                        class="search-input-suggest flex-1 bg-transparent border-0 text-maroon-900 placeholder-maroon-300 focus:ring-0 focus:outline-none outline-none px-6 md:px-8 py-4 md:py-5 text-sm md:text-lg font-medium ring-0">
 
-                    <div class="pr-2">
-                        <button type="submit"
-                            class="px-10 py-4 saffron-gradient text-white font-bold rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all text-[10px] uppercase tracking-widest">
-                            Search
-                        </button>
-                    </div>
+                    <button type="submit"
+                        class="px-6 md:px-10 py-4 saffron-gradient text-white font-bold rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all text-[10px] md:text-xs uppercase tracking-widest shrink-0">
+                        Search
+                    </button>
                 </div>
             </form>
         </div>
