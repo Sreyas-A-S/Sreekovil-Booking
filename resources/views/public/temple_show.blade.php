@@ -115,7 +115,7 @@
                             </div>
 
                             <div class="pt-8 mt-8 border-t border-slate-100 flex items-center justify-between">
-                                <a href="{{ route('public.hotel.show', $hotel) }}"
+                                <a href="{{ route('public.hotel.show', ['hotel' => $hotel->slug]) }}"
                                     class="inline-flex items-center gap-2 text-saffron-600 font-bold text-sm uppercase tracking-widest hover:translate-x-2 transition-transform">
                                     View Details
                                     <i data-lucide="chevron-right" class="w-4 h-4"></i>
