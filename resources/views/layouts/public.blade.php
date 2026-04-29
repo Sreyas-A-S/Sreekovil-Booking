@@ -88,7 +88,7 @@
         #preloader {
             position: fixed;
             inset: 0;
-            background: linear-gradient(135deg, #fffcf5 0%, #fff0e0 100%);
+            background: #2d1005; /* Dark brown matching bg-orange-950 */
             z-index: 9999;
             display: flex;
             align-items: center;
