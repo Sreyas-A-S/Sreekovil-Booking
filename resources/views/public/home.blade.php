@@ -64,10 +64,10 @@
                             class="absolute inset-0 bg-saffron-500/10 blur-3xl group-hover:bg-saffron-500/20 transition-all duration-500 rounded-full">
                         </div>
                         <div
-                            class="relative flex items-center p-1.5 bg-white/10 backdrop-blur-3xl border border-white/20 rounded-full shadow-2xl overflow-hidden group-focus-within:border-saffron-500/50 transition-all">
+                            class="relative flex items-center p-1.5 bg-white/40 backdrop-blur-3xl border border-white/30 rounded-full shadow-2xl overflow-hidden group-focus-within:border-saffron-500/50 transition-all">
                             <input type="text" name="search" autocomplete="off"
                                 placeholder="Search temples, hotels, or sacred places..."
-                                class="search-input-suggest flex-1 bg-transparent border-0 text-white placeholder-white/40 focus:ring-0 focus:outline-none outline-none px-6 md:px-8 py-3.5 md:py-4 text-sm md:text-lg font-medium ring-0">
+                                class="search-input-suggest flex-1 bg-transparent border-0 text-white placeholder-white/60 focus:ring-0 focus:outline-none outline-none px-6 md:px-8 py-3.5 md:py-4 text-sm md:text-lg font-medium ring-0">
                             <button type="submit"
                                 class="px-8 md:px-12 py-3.5 md:py-4 saffron-gradient text-white font-bold rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all text-[10px] md:text-xs uppercase tracking-[0.2em]">
                                 Search
@@ -162,13 +162,20 @@
                             if (completed === counters.length) {
                                 // All finished, wait 5 seconds then fade out
                                 setTimeout(() => {
-                                    statsSection.style.opacity = '0';
-                                    statsSection.style.transform = 'translateY(20px)';
-                                    statsSection.style.pointerEvents = 'none';
-                                    // Remove margin after fade to collapse space
-                                    setTimeout(() => {
-                                        statsSection.style.display = 'none';
-                                    }, 1000);
+                                    // Lock current height for transition
+                                    statsSection.style.maxHeight = statsSection.offsetHeight + 'px';
+                                    statsSection.style.opacity = '1';
+                                    
+                                    // Trigger collapse
+                                    requestAnimationFrame(() => {
+                                        statsSection.style.transition = 'all 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
+                                        statsSection.style.opacity = '0';
+                                        statsSection.style.maxHeight = '0';
+                                        statsSection.style.marginTop = '0';
+                                        statsSection.style.marginBottom = '0';
+                                        statsSection.style.transform = 'scale(0.95) translateY(20px)';
+                                        statsSection.style.pointerEvents = 'none';
+                                    });
                                 }, 5000);
                             }
                         }
