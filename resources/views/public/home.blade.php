@@ -100,34 +100,93 @@
     @endif
 
     <!-- Stats / Highlights -->
-    <section
-        class="bg-[#4a1d0b] backdrop-blur-2xl mx-6 md:mx-auto max-w-4xl -mt-12 relative z-20 rounded-[2.5rem] shadow-[0_30px_70px_rgba(0,0,0,0.4)] border border-white/5 overflow-hidden">
+    <section id="stats-section"
+        class="bg-[#4a1d0b] backdrop-blur-2xl mx-6 md:mx-auto max-w-4xl -mt-12 relative z-20 rounded-[2.5rem] shadow-[0_30px_70px_rgba(0,0,0,0.4)] border border-white/5 overflow-hidden transition-all duration-1000">
         @if($heroStatsMode === 'image' && $heroStatsImage)
             <img src="{{ asset('storage/' . $heroStatsImage) }}" class="w-full h-full object-cover animate-fade-in" alt="Hero Highlights">
         @else
             <div class="grid grid-cols-2 md:grid-cols-4 px-6 md:px-8 py-5 md:py-6 w-full animate-fade-in divide-x divide-y md:divide-y-0 divide-white/5">
-                <div
-                    class="text-center py-4 md:py-0 space-y-1 hover:scale-105 transition-transform duration-500">
-                    <p class="text-3xl md:text-4xl font-black text-saffron-400 font-display italic tracking-tight">{{ $statsTemples }}</p>
+                <div class="text-center py-4 md:py-0 space-y-1 hover:scale-105 transition-transform duration-500">
+                    <p class="stat-counter text-3xl md:text-4xl font-black text-saffron-400 font-display italic tracking-tight" 
+                       data-target="{{ preg_replace('/[^0-9]/', '', $statsTemples) }}" 
+                       data-suffix="{{ preg_replace('/[0-9]/', '', $statsTemples) }}">0</p>
                     <p class="text-[8px] md:text-[9px] text-saffron-100/50 uppercase font-black tracking-[0.3em]">Divine Temples</p>
                 </div>
-                <div
-                    class="text-center py-4 md:py-0 space-y-1 hover:scale-105 transition-transform duration-500">
-                    <p class="text-3xl md:text-4xl font-black text-saffron-400 font-display italic tracking-tight">{{ $statsHotels }}</p>
+                <div class="text-center py-4 md:py-0 space-y-1 hover:scale-105 transition-transform duration-500">
+                    <p class="stat-counter text-3xl md:text-4xl font-black text-saffron-400 font-display italic tracking-tight" 
+                       data-target="{{ preg_replace('/[^0-9]/', '', $statsHotels) }}" 
+                       data-suffix="{{ preg_replace('/[0-9]/', '', $statsHotels) }}">0</p>
                     <p class="text-[8px] md:text-[9px] text-saffron-100/50 uppercase font-black tracking-[0.3em]">Luxury Stays</p>
                 </div>
-                <div
-                    class="text-center py-4 md:py-0 space-y-1 hover:scale-105 transition-transform duration-500">
-                    <p class="text-3xl md:text-4xl font-black text-saffron-400 font-display italic tracking-tight">{{ $statsDevotees }}</p>
+                <div class="text-center py-4 md:py-0 space-y-1 hover:scale-105 transition-transform duration-500">
+                    <p class="stat-counter text-3xl md:text-4xl font-black text-saffron-400 font-display italic tracking-tight" 
+                       data-target="{{ preg_replace('/[^0-9]/', '', $statsDevotees) }}" 
+                       data-suffix="{{ preg_replace('/[0-9]/', '', $statsDevotees) }}">0</p>
                     <p class="text-[8px] md:text-[9px] text-saffron-100/50 uppercase font-black tracking-[0.3em]">Happy Devotees</p>
                 </div>
                 <div class="text-center py-4 md:py-0 space-y-1 hover:scale-105 transition-transform duration-500 border-l-0 md:border-l">
-                    <p class="text-3xl md:text-4xl font-black text-saffron-400 font-display italic tracking-tight">{{ $statsSupport }}</p>
+                    <p class="stat-counter text-3xl md:text-4xl font-black text-saffron-400 font-display italic tracking-tight" 
+                       data-target="{{ preg_replace('/[^0-9]/', '', $statsSupport) }}" 
+                       data-suffix="{{ preg_replace('/[0-9]/', '', $statsSupport) }}">0</p>
                     <p class="text-[8px] md:text-[9px] text-saffron-100/50 uppercase font-black tracking-[0.3em]">Sacred Support</p>
                 </div>
             </div>
         @endif
     </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const statsSection = document.getElementById('stats-section');
+            const counters = document.querySelectorAll('.stat-counter');
+            
+            const animateStats = () => {
+                let completed = 0;
+                counters.forEach(counter => {
+                    const target = parseInt(counter.getAttribute('data-target')) || 0;
+                    const suffix = counter.getAttribute('data-suffix') || '';
+                    const duration = 2000;
+                    const startTime = performance.now();
+
+                    const update = (now) => {
+                        const elapsed = now - startTime;
+                        const progress = Math.min(elapsed / duration, 1);
+                        const easeOut = 1 - Math.pow(1 - progress, 3); // Cubic ease out
+                        const current = Math.floor(easeOut * target);
+                        
+                        counter.innerText = current + suffix;
+
+                        if (progress < 1) {
+                            requestAnimationFrame(update);
+                        } else {
+                            completed++;
+                            if (completed === counters.length) {
+                                // All finished, wait 5 seconds then fade out
+                                setTimeout(() => {
+                                    statsSection.style.opacity = '0';
+                                    statsSection.style.transform = 'translateY(20px)';
+                                    statsSection.style.pointerEvents = 'none';
+                                    // Remove margin after fade to collapse space
+                                    setTimeout(() => {
+                                        statsSection.style.display = 'none';
+                                    }, 1000);
+                                }, 5000);
+                            }
+                        }
+                    };
+                    requestAnimationFrame(update);
+                });
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting) {
+                    animateStats();
+                    observer.unobserve(statsSection);
+                }
+            }, { threshold: 0.5 });
+
+            if (statsSection) observer.observe(statsSection);
+        });
+    </script>
 
     <!-- Temples Listing -->
     <section id="temples" class="py-16 px-6">
