@@ -8,15 +8,15 @@
         </div>
         <div class="absolute inset-0 mandala-overlay opacity-50 mix-blend-overlay"></div>
 
-        <div class="relative z-30 max-w-7xl mx-auto px-8 md:px-6 text-center animate-fade-in pt-10 pb-0">
+        <div class="relative z-30 max-w-7xl mx-auto px-4 md:px-6 text-center animate-fade-in pt-10 pb-0">
             <div class="flex flex-col items-center gap-4">
                 <!-- Chants Section -->
                 @if(count($chants) > 0)
-                    <div class="relative w-full min-h-[100px] flex flex-col items-center justify-center">
+                    <div class="relative w-full min-h-[100px] flex flex-col items-center justify-center px-4">
                         @foreach($chants as $index => $chant)
                             <div class="chant-item absolute inset-0 flex flex-col items-center justify-center transition-all duration-1000 opacity-0 transform translate-y-8 pointer-events-none" 
                                  data-index="{{ $index }}">
-                                <h2 class="text-3xl md:text-5xl font-black text-white font-display uppercase tracking-[0.2em] leading-tight mb-2 drop-shadow-2xl">
+                                <h2 class="text-2xl md:text-5xl font-black text-white font-display uppercase tracking-[0.2em] leading-tight mb-2 drop-shadow-2xl">
                                     {{ $chant->text }}
                                 </h2>
                                 <div class="flex items-center gap-4">
@@ -66,10 +66,10 @@
                         <div
                             class="relative flex items-center p-1.5 bg-white/40 backdrop-blur-3xl border border-white/30 rounded-full shadow-2xl overflow-hidden group-focus-within:border-saffron-500/50 transition-all">
                             <input type="text" name="search" autocomplete="off"
-                                placeholder="Search temples, hotels, or sacred places..."
-                                class="search-input-suggest flex-1 bg-transparent border-0 text-white placeholder-white/60 focus:ring-0 focus:outline-none outline-none px-6 md:px-8 py-3.5 md:py-4 text-sm md:text-lg font-medium ring-0">
+                                placeholder="Search temples..."
+                                class="search-input-suggest flex-1 bg-transparent border-0 text-white placeholder-white/60 focus:ring-0 focus:outline-none outline-none px-4 md:px-8 py-3 md:py-4 text-xs md:text-lg font-medium ring-0">
                             <button type="submit"
-                                class="px-8 md:px-12 py-3.5 md:py-4 saffron-gradient text-white font-bold rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all text-[10px] md:text-xs uppercase tracking-[0.2em]">
+                                class="px-5 md:px-12 py-3 md:py-4 saffron-gradient text-white font-bold rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all text-[9px] md:text-xs uppercase tracking-[0.2em]">
                                 Search
                             </button>
                         </div>
@@ -101,11 +101,11 @@
 
     <!-- Stats / Highlights -->
     <section id="stats-section"
-        class="bg-[#4a1d0b] backdrop-blur-2xl mx-6 md:mx-auto max-w-4xl -mt-12 relative z-20 rounded-[2.5rem] shadow-[0_30px_70px_rgba(0,0,0,0.4)] border border-white/5 overflow-hidden transition-all duration-1000">
+        class="bg-[#4a1d0b] backdrop-blur-2xl mx-4 md:mx-auto max-w-4xl -mt-12 relative z-20 rounded-[2.5rem] shadow-[0_30px_70px_rgba(0,0,0,0.4)] border border-white/5 overflow-hidden transition-all duration-1000">
         @if($heroStatsMode === 'image' && $heroStatsImage)
             <img src="{{ asset('storage/' . $heroStatsImage) }}" class="w-full h-full object-cover animate-fade-in" alt="Hero Highlights">
         @else
-            <div class="grid grid-cols-2 md:grid-cols-4 px-6 md:px-8 py-5 md:py-6 w-full animate-fade-in divide-x divide-y md:divide-y-0 divide-white/5">
+            <div class="grid grid-cols-2 md:grid-cols-4 px-4 md:px-8 py-5 md:py-6 w-full animate-fade-in divide-x divide-y md:divide-y-0 divide-white/5">
                 <div class="text-center py-4 md:py-0 space-y-1 hover:scale-105 transition-transform duration-500">
                     <p class="stat-counter text-3xl md:text-4xl font-black text-saffron-400 font-display italic tracking-tight" 
                        data-target="{{ preg_replace('/[^0-9]/', '', $statsTemples) }}" 
