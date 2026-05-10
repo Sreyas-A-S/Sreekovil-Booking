@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TempleController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\SongController;
+use App\Http\Controllers\ChantController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\PublicController;
@@ -31,6 +32,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::resource('temples', TempleController::class);
     Route::resource('hotels', HotelController::class);
     Route::resource('songs', SongController::class);
+    Route::resource('chants', ChantController::class);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

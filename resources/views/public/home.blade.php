@@ -2,56 +2,79 @@
 
 @section('content')
     <!-- Hero Section -->
-    <section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+    <section class="relative min-h-[40vh] md:min-h-[45vh] overflow-hidden pt-16 pb-24">
         <div class="absolute inset-0 hero-gradient"
-            style="background-image: linear-gradient(to bottom, rgba(255, 153, 51, 0.6), rgba(230, 92, 0, 0.85)), url('{{ asset('assets/hero-bg.png') }}');">
+            style="background-image: linear-gradient(to bottom, #2d1005 0%, rgba(255, 153, 51, 0.8) 50%, rgba(230, 92, 0, 0.9) 100%), url('{{ asset('assets/hero-bg.png') }}');">
         </div>
         <div class="absolute inset-0 mandala-overlay opacity-50 mix-blend-overlay"></div>
 
-        <div class="relative z-30 max-w-7xl mx-auto px-8 md:px-6 text-center animate-fade-in">
-            <div class="flex flex-col items-center gap-6">
-                <span
-                    class="inline-block px-6 py-2 rounded-full glass border border-gold-500/30 text-gold-400 font-bold text-xs uppercase tracking-[0.4em] mb-4">
-                    The Sacred Journey
-                </span>
-                <h1
-                    class="text-6xl md:text-8xl font-black text-white font-display uppercase tracking-tighter leading-tight">
-                    Embrace the <br>
-                    <span
-                        class="text-transparent bg-clip-text bg-gradient-to-r from-saffron-400 via-gold-500 to-saffron-500">Divine
-                        Wisdom</span>
-                </h1>
+        <div class="relative z-30 max-w-7xl mx-auto px-8 md:px-6 text-center animate-fade-in pt-10 pb-0">
+            <div class="flex flex-col items-center gap-4">
+                <!-- Chants Section -->
+                @if(count($chants) > 0)
+                    <div class="relative w-full min-h-[100px] flex flex-col items-center justify-center">
+                        @foreach($chants as $index => $chant)
+                            <div class="chant-item absolute inset-0 flex flex-col items-center justify-center transition-all duration-1000 opacity-0 transform translate-y-8 pointer-events-none" 
+                                 data-index="{{ $index }}">
+                                <h2 class="text-3xl md:text-5xl font-black text-white font-display uppercase tracking-[0.2em] leading-tight mb-2 drop-shadow-2xl">
+                                    {{ $chant->text }}
+                                </h2>
+                                <div class="flex items-center gap-4">
+                                    <div class="w-8 h-px bg-gradient-to-r from-transparent to-saffron-500/50"></div>
+                                    <p class="text-saffron-400 font-bold text-xs md:text-sm uppercase tracking-[0.4em] italic opacity-80">
+                                        {{ $chant->meaning }}
+                                    </p>
+                                    <div class="w-8 h-px bg-gradient-to-l from-transparent to-saffron-500/50"></div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', () => {
+                            const chants = document.querySelectorAll('.chant-item');
+                            let current = 0;
+                            
+                            if (chants.length > 0) {
+                                const showChant = (index) => {
+                                    chants.forEach(c => {
+                                        c.classList.remove('opacity-100', 'translate-y-0');
+                                        c.classList.add('opacity-0', 'translate-y-8');
+                                    });
+                                    chants[index].classList.remove('opacity-0', 'translate-y-8');
+                                    chants[index].classList.add('opacity-100', 'translate-y-0');
+                                };
+                                
+                                showChant(0);
+                                if (chants.length > 1) {
+                                    setInterval(() => {
+                                        current = (current + 1) % chants.length;
+                                        showChant(current);
+                                    }, 6000);
+                                }
+                            }
+                        });
+                    </script>
+                @endif
+
                 <!-- Search Bar -->
-                <div class="w-full max-w-3xl mt-6 animate-slide-up relative z-30" style="animation-delay: 0.4s">
+                <div class="w-full max-w-4xl animate-slide-up relative z-30">
                     <form action="{{ route('public.temple.index') }}" method="GET" class="relative group">
                         <div
-                            class="absolute inset-0 bg-saffron-500/20 blur-2xl group-hover:bg-saffron-500/30 transition-all duration-500 rounded-full">
+                            class="absolute inset-0 bg-saffron-500/10 blur-3xl group-hover:bg-saffron-500/20 transition-all duration-500 rounded-full">
                         </div>
                         <div
-                            class="relative flex items-center p-2 bg-white/10 backdrop-blur-3xl border border-white/20 rounded-full shadow-2xl overflow-hidden group-focus-within:border-saffron-500/50 transition-all">
+                            class="relative flex items-center p-1.5 bg-white/10 backdrop-blur-3xl border border-white/20 rounded-full shadow-2xl overflow-hidden group-focus-within:border-saffron-500/50 transition-all">
                             <input type="text" name="search" autocomplete="off"
                                 placeholder="Search temples, hotels, or sacred places..."
-                                class="search-input-suggest flex-1 bg-transparent border-0 text-white placeholder-white/40 focus:ring-0 focus:outline-none outline-none px-8 py-4 text-sm md:text-lg font-medium ring-0">
+                                class="search-input-suggest flex-1 bg-transparent border-0 text-white placeholder-white/40 focus:ring-0 focus:outline-none outline-none px-6 md:px-8 py-3.5 md:py-4 text-sm md:text-lg font-medium ring-0">
                             <button type="submit"
-                                class="px-6 md:px-10 py-4 saffron-gradient text-white font-bold rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all text-[10px] md:text-xs uppercase tracking-widest">
+                                class="px-8 md:px-12 py-3.5 md:py-4 saffron-gradient text-white font-bold rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all text-[10px] md:text-xs uppercase tracking-[0.2em]">
                                 Search
                             </button>
                         </div>
                     </form>
 
-                    <div class="flex flex-wrap justify-center gap-4 mt-6">
-                        <span class="text-[10px] text-white/40 font-bold uppercase tracking-widest py-1">Quick
-                            Search:</span>
-                        <a href="{{ route('public.temple.index', ['search' => 'luxury']) }}"
-                            class="text-[10px] text-saffron-200/60 hover:text-saffron-400 font-bold uppercase tracking-widest transition-colors">Luxury
-                            Stays</a>
-                        <a href="{{ route('public.temple.index', ['search' => 'sanctuary']) }}"
-                            class="text-[10px] text-saffron-200/60 hover:text-saffron-400 font-bold uppercase tracking-widest transition-colors">Quiet
-                            Sanctuaries</a>
-                        <a href="{{ route('public.temple.index', ['search' => 'ancient']) }}"
-                            class="text-[10px] text-saffron-200/60 hover:text-saffron-400 font-bold uppercase tracking-widest transition-colors">Ancient
-                            Shrines</a>
-                    </div>
                 </div>
             </div>
         </div>
@@ -78,38 +101,38 @@
 
     <!-- Stats / Highlights -->
     <section
-        class="bg-orange-900/95 backdrop-blur-2xl mx-4 md:mx-auto max-w-6xl -mt-24 relative z-20 rounded-[2.5rem] md:rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 overflow-hidden min-h-[180px] flex items-center justify-center">
+        class="bg-[#4a1d0b] backdrop-blur-2xl mx-6 md:mx-auto max-w-4xl -mt-12 relative z-20 rounded-[2.5rem] shadow-[0_30px_70px_rgba(0,0,0,0.4)] border border-white/5 overflow-hidden">
         @if($heroStatsMode === 'image' && $heroStatsImage)
             <img src="{{ asset('storage/' . $heroStatsImage) }}" class="w-full h-full object-cover animate-fade-in" alt="Hero Highlights">
         @else
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-12 px-6 md:px-12 py-10 md:py-12 w-full animate-fade-in">
+            <div class="grid grid-cols-2 md:grid-cols-4 px-6 md:px-8 py-5 md:py-6 w-full animate-fade-in divide-x divide-y md:divide-y-0 divide-white/5">
                 <div
-                    class="text-center space-y-3 border-r border-white/10 last:border-0 hover:scale-105 transition-transform duration-500">
-                    <p class="text-3xl md:text-5xl font-black text-saffron-400 font-display italic">{{ $statsTemples }}</p>
-                    <p class="text-[9px] md:text-[11px] text-maroon-200 uppercase font-black tracking-[0.3em]">Divine Temples</p>
+                    class="text-center py-4 md:py-0 space-y-1 hover:scale-105 transition-transform duration-500">
+                    <p class="text-3xl md:text-4xl font-black text-saffron-400 font-display italic tracking-tight">{{ $statsTemples }}</p>
+                    <p class="text-[8px] md:text-[9px] text-saffron-100/50 uppercase font-black tracking-[0.3em]">Divine Temples</p>
                 </div>
                 <div
-                    class="text-center space-y-3 border-r border-white/10 last:border-0 hover:scale-105 transition-transform duration-500">
-                    <p class="text-3xl md:text-5xl font-black text-saffron-400 font-display italic">{{ $statsHotels }}</p>
-                    <p class="text-[9px] md:text-[11px] text-orange-200 uppercase font-black tracking-[0.3em]">Luxury Stays</p>
+                    class="text-center py-4 md:py-0 space-y-1 hover:scale-105 transition-transform duration-500">
+                    <p class="text-3xl md:text-4xl font-black text-saffron-400 font-display italic tracking-tight">{{ $statsHotels }}</p>
+                    <p class="text-[8px] md:text-[9px] text-saffron-100/50 uppercase font-black tracking-[0.3em]">Luxury Stays</p>
                 </div>
                 <div
-                    class="text-center space-y-3 border-r border-white/10 last:border-0 hover:scale-105 transition-transform duration-500">
-                    <p class="text-3xl md:text-5xl font-black text-saffron-400 font-display italic">{{ $statsDevotees }}</p>
-                    <p class="text-[9px] md:text-[11px] text-orange-200 uppercase font-black tracking-[0.3em]">Happy Devotees</p>
+                    class="text-center py-4 md:py-0 space-y-1 hover:scale-105 transition-transform duration-500">
+                    <p class="text-3xl md:text-4xl font-black text-saffron-400 font-display italic tracking-tight">{{ $statsDevotees }}</p>
+                    <p class="text-[8px] md:text-[9px] text-saffron-100/50 uppercase font-black tracking-[0.3em]">Happy Devotees</p>
                 </div>
-                <div class="text-center space-y-3 last:border-0 hover:scale-105 transition-transform duration-500">
-                    <p class="text-3xl md:text-5xl font-black text-saffron-400 font-display italic">{{ $statsSupport }}</p>
-                    <p class="text-[9px] md:text-[11px] text-orange-200 uppercase font-black tracking-[0.3em]">Sacred Support</p>
+                <div class="text-center py-4 md:py-0 space-y-1 hover:scale-105 transition-transform duration-500 border-l-0 md:border-l">
+                    <p class="text-3xl md:text-4xl font-black text-saffron-400 font-display italic tracking-tight">{{ $statsSupport }}</p>
+                    <p class="text-[8px] md:text-[9px] text-saffron-100/50 uppercase font-black tracking-[0.3em]">Sacred Support</p>
                 </div>
             </div>
         @endif
     </section>
 
     <!-- Temples Listing -->
-    <section id="temples" class="py-32 px-6">
+    <section id="temples" class="py-16 px-6">
         <div class="max-w-7xl mx-auto">
-            <div class="flex flex-col items-center text-center space-y-4 mb-20">
+            <div class="flex flex-col items-center text-center space-y-2 mb-12">
                 <p class="text-saffron-600 font-bold text-xs uppercase tracking-[0.4em]">Sacred Sanctuaries</p>
                 <h2 class="text-4xl md:text-5xl font-black text-orange-950 font-display uppercase tracking-widest">Featured
                     Shrines</h2>
@@ -119,11 +142,12 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 @foreach($temples as $temple)
                     <a href="{{ route('public.temple.show', ['temple' => $temple->slug]) }}"
-                        class="group relative bg-white rounded-[2.5rem] overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-700 animate-slide-up border border-slate-100">
+                        class="group bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 animate-slide-up border border-slate-100 flex flex-col">
                         <div class="aspect-video relative overflow-hidden">
                             @if($temple->photos && count($temple->photos) > 0)
                                 <img src="{{ str_starts_with($temple->photos[0], 'http') ? $temple->photos[0] : (str_starts_with($temple->photos[0], 'assets/') ? asset($temple->photos[0]) : asset('storage/' . $temple->photos[0])) }}"
-                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+                                    loading="lazy" alt="{{ $temple->name }}">
                             @else
                                 <div class="w-full h-full bg-slate-100 flex items-center justify-center">
                                     <i data-lucide="image" class="w-12 h-12 text-slate-300"></i>
@@ -141,8 +165,8 @@
                             </div>
                         </div>
 
-                        <div class="p-6 relative -mt-8">
-                            <div class="bg-white rounded-3xl p-5 shadow-xl space-y-3 border border-slate-50 relative z-10">
+                        <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                            <div class="space-y-3">
                                 <div class="flex justify-between items-start gap-4">
                                     <h3
                                         class="text-2xl font-bold font-display text-orange-950 group-hover:text-saffron-600 transition-colors uppercase leading-tight">

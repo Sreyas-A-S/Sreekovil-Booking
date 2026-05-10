@@ -180,11 +180,11 @@
         }
     </style>
     <!-- Navigation -->
-    <nav class="fixed top-0 left-0 right-0 z-[100] transition-all duration-500 py-6" id="main-nav">
+    <nav class="fixed top-0 left-0 right-0 z-[100] transition-all duration-500 py-4 bg-orange-950 shadow-lg" id="main-nav">
         <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
-            <a href="/" class="flex items-center gap-3 group">
+            <a href="/" class="flex items-center gap-4 group">
                 <img src="{{ asset('assets/sreekovil-white-logo.png') }}" alt="Sreekovil"
-                    class="h-10 md:h-14 w-auto drop-shadow-xl group-hover:scale-105 transition-transform duration-500">
+                    class="h-10 md:h-12 w-auto drop-shadow-xl group-hover:scale-105 transition-transform duration-500">
             </a>
 
             <div class="hidden md:flex items-center gap-10">
@@ -274,7 +274,7 @@
     </footer>
 
     <!-- Icons -->
-    <script src="https://cdn.jsdelivr.net/npm/lucide@0.435.0/dist/umd/lucide.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest" defer></script>
     <script>
         // Preloader Logic
         window.addEventListener('load', () => {
@@ -298,17 +298,6 @@
             }
         });
 
-        // Navbar Scroll Effect
-        window.addEventListener('scroll', () => {
-            const nav = document.getElementById('main-nav');
-            if (window.scrollY > 50) {
-                nav.classList.add('bg-orange-950/90', 'backdrop-blur-xl', 'py-4', 'shadow-2xl');
-                nav.classList.remove('py-6');
-            } else {
-                nav.classList.remove('bg-orange-950/90', 'backdrop-blur-xl', 'py-4', 'shadow-2xl');
-                nav.classList.add('py-6');
-            }
-        });
 
         // Search Suggestions Implementation
         const searchInputs = document.querySelectorAll('.search-input-suggest');

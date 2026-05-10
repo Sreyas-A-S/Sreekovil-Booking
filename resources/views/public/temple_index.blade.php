@@ -55,11 +55,12 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
                 @forelse($temples as $temple)
                     <a href="{{ route('public.temple.show', $temple) }}"
-                        class="group relative bg-white rounded-[2.5rem] overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-700 border border-slate-100">
+                        class="group bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 border border-slate-100 flex flex-col">
                         <div class="aspect-video relative overflow-hidden">
                             @if($temple->photos && count($temple->photos) > 0)
                                 <img src="{{ str_starts_with($temple->photos[0], 'http') ? $temple->photos[0] : (str_starts_with($temple->photos[0], 'assets/') ? asset($temple->photos[0]) : asset('storage/' . $temple->photos[0])) }}"
-                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+                                    loading="lazy" alt="{{ $temple->name }}">
                             @else
                                 <div class="w-full h-full bg-slate-100 flex items-center justify-center">
                                     <i data-lucide="image" class="w-12 h-12 text-slate-300"></i>
@@ -76,8 +77,8 @@
                             </div>
                         </div>
 
-                        <div class="p-6 relative -mt-8">
-                            <div class="bg-white rounded-3xl p-5 shadow-xl space-y-3 border border-slate-50 relative z-10">
+                        <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                            <div class="space-y-3">
                                 <div class="flex justify-between items-start gap-4">
                                     <h3
                                         class="text-2xl font-bold font-display text-orange-950 group-hover:text-saffron-600 transition-colors uppercase leading-tight">

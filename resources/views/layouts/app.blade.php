@@ -73,6 +73,11 @@
                     <i data-lucide="music" class="w-5 h-5"></i>
                     <span class="font-bold tracking-wide">Playlist</span>
                 </a>
+                <a href="{{ route('admin.chants.index') }}"
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('admin.chants.*') ? 'bg-saffron-500/10 text-saffron-100 border-l-4 border-gold-500' : 'text-saffron-200/50 hover:bg-white/5 hover:text-white' }}">
+                    <i data-lucide="book-open" class="w-5 h-5"></i>
+                    <span class="font-bold tracking-wide">Sacred Chants</span>
+                </a>
                 <a href="{{ route('admin.settings.index') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 {{ request()->routeIs('admin.settings.*') ? 'bg-saffron-500/10 text-saffron-100 border-l-4 border-gold-500' : 'text-saffron-200/50 hover:bg-white/5 hover:text-white' }}">
                     <i data-lucide="settings" class="w-5 h-5"></i>

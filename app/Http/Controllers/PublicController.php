@@ -8,12 +8,13 @@ use Illuminate\Http\Request;
 
 use App\Models\Setting;
 use App\Models\Song;
+use App\Models\Chant;
 
 class PublicController extends Controller
 {
     public function home()
     {
-        $temples = Temple::latest()->take(6)->get();
+        $temples = Temple::latest()->take(6)->get(['id', 'name', 'slug', 'location', 'photos']);
         $homepageSongId = Setting::getValue('homepage_song_id');
         $homepageSong = $homepageSongId ? Song::find($homepageSongId) : null;
 
@@ -23,6 +24,8 @@ class PublicController extends Controller
         $statsHotels = Setting::getValue('stats_hotels', '200+');
         $statsDevotees = Setting::getValue('stats_devotees', '10k+');
         $statsSupport = Setting::getValue('stats_support', '24/7');
+        
+        $chants = Chant::where('is_active', true)->select('text', 'meaning')->get();
 
         return view('public.home', compact(
             'temples', 
@@ -32,7 +35,8 @@ class PublicController extends Controller
             'statsTemples', 
             'statsHotels', 
             'statsDevotees', 
-            'statsSupport'
+            'statsSupport',
+            'chants'
         ));
     }
 
@@ -41,6 +45,7 @@ class PublicController extends Controller
         $search = $request->input('search');
 
         $temples = Temple::query()
+            ->select(['id', 'name', 'slug', 'location', 'photos'])
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%")
