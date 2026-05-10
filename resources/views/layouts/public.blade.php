@@ -39,7 +39,7 @@
         }
 
         .mandala-overlay {
-            background-image: url("/assets/mandala.png");
+            background-image: url("/assets/mandala.webp");
             background-size: 800px;
             background-repeat: repeat;
         }
@@ -88,7 +88,8 @@
         #preloader {
             position: fixed;
             inset: 0;
-            background: #2d1005; /* Dark brown matching bg-orange-950 */
+            background: #2d1005;
+            /* Dark brown matching bg-orange-950 */
             z-index: 9999;
             display: flex;
             align-items: center;
@@ -101,7 +102,7 @@
             content: '';
             position: absolute;
             inset: -100%;
-            background-image: url("/assets/mandala.png");
+            background-image: url("/assets/mandala.webp");
             background-size: 800px;
             background-repeat: repeat;
             opacity: 0.04;
@@ -110,8 +111,13 @@
         }
 
         @keyframes rotate-slow {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         #preloader.fade-out {
@@ -136,10 +142,13 @@
         }
 
         @keyframes pulse-logo {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: scale(1);
                 filter: drop-shadow(0 10px 30px rgba(255, 153, 51, 0.15));
             }
+
             50% {
                 transform: scale(1.05);
                 filter: drop-shadow(0 20px 50px rgba(255, 153, 51, 0.3));
@@ -162,8 +171,13 @@
 
     <style>
         @keyframes loading {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(200%); }
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(200%);
+            }
         }
     </style>
     <!-- Navigation -->
@@ -387,12 +401,12 @@
             div.innerHTML = data.map(item => `
                 <a href="${item.url}" class="group flex items-center gap-4 px-6 py-4 hover:bg-orange-50/50 transition-all border-b border-orange-50 last:border-0">
                     <div class="w-14 h-14 rounded-2xl overflow-hidden shrink-0 shadow-sm group-hover:shadow-md transition-shadow">
-                        ${item.image ? 
-                            `<img src="${item.image}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">` :
-                            `<div class="w-full h-full ${item.type === 'temple' ? 'bg-saffron-50 text-saffron-600' : 'bg-gold-50 text-gold-600'} flex items-center justify-center">
+                        ${item.image ?
+                    `<img src="${item.image}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">` :
+                    `<div class="w-full h-full ${item.type === 'temple' ? 'bg-saffron-50 text-saffron-600' : 'bg-gold-50 text-gold-600'} flex items-center justify-center">
                                 <i data-lucide="${item.type === 'temple' ? 'sun' : 'hotel'}" class="w-6 h-6"></i>
                             </div>`
-                        }
+                }
                     </div>
                     <div class="flex-1 min-w-0 text-left">
                         <div class="flex items-center gap-2 mb-0.5">
