@@ -558,14 +558,26 @@
             if (currentLoadingBtn) resetBtnLoading(currentLoadingBtn);
             if (btn) setBtnLoading(btn);
 
+            // Optimized Loading Logic for any format
+            globalAudio.pause();
             globalAudio.src = src;
+            globalAudio.load(); // Force immediate packet buffering
+
             document.getElementById('player-song-title').innerText = title;
             document.getElementById('player-song-artist').innerText = artist || 'Unknown Artist';
 
             globalPlayer.classList.remove('translate-y-full');
             setPlayerLoading(true);
-            globalAudio.play();
-            updatePlayerState(true);
+            
+            const playPromise = globalAudio.play();
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    updatePlayerState(true);
+                    setPlayerLoading(false);
+                }).catch(error => {
+                    setPlayerLoading(false);
+                });
+            }
         }
 
         function togglePlayPause() {

@@ -155,6 +155,7 @@
             }
         }
     </style>
+    @stack('head')
 </head>
 
 <body class="bg-slate-50 font-body text-slate-900 overflow-x-hidden">
@@ -424,17 +425,47 @@
             div.classList.remove('opacity-100', 'translate-y-0');
         }
 
-        // Navbar Scroll Logic
-        window.addEventListener('scroll', () => {
-            const nav = document.getElementById('main-nav');
-            if (window.scrollY > 50) {
-                nav.classList.remove('bg-transparent', 'py-4');
-                nav.classList.add('bg-orange-950/90', 'backdrop-blur-md', 'shadow-lg', 'py-3');
-            } else {
-                nav.classList.add('bg-transparent', 'py-4');
-                nav.classList.remove('bg-orange-950/90', 'backdrop-blur-md', 'shadow-lg', 'py-3');
+    </script>
+
+    <!-- Background Divine Audio (Hidden) -->
+    <audio id="global-audio-element" preload="auto" crossorigin="anonymous" class="hidden"></audio>
+
+    <script>
+        // Global Music Player Logic (Background Only)
+        const globalAudio = document.getElementById('global-audio-element');
+
+        function playGlobalSong(src, title, artist, btn = null) {
+            if (globalAudio.src === src) {
+                if (globalAudio.paused) globalAudio.play();
+                else globalAudio.pause();
+                return;
             }
-        });
+
+            // Optimized Loading Logic for any format (mp3, wav, ogg, etc.)
+            globalAudio.pause();
+            globalAudio.src = src; 
+            globalAudio.load(); 
+
+            // Attempt Autoplay
+            const playPromise = globalAudio.play();
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    console.log("Divine audio streaming in background...");
+                }).catch(error => {
+                    console.log("Autoplay prevented. Waiting for interaction.");
+                });
+            }
+        }
+
+        function togglePlayPause() {
+            if (!globalAudio.src) return;
+            if (globalAudio.paused) globalAudio.play();
+            else globalAudio.pause();
+        }
+
+        function setPlayerVolume(val) {
+            globalAudio.volume = val;
+        }
     </script>
 </body>
 

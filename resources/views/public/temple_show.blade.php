@@ -37,19 +37,29 @@
                 <!-- Hymn Player -->
                 @if($temple->idleSong)
                     <div class="w-full md:w-80 glass rounded-[2rem] p-6 border border-white/10 shadow-2xl animate-float">
-                        <div class="flex items-center gap-4 mb-4">
-                            <div
-                                class="w-10 h-10 rounded-full saffron-gradient flex items-center justify-center text-white scale-110 shadow-lg">
-                                <i data-lucide="music-2" class="w-5 h-5 animate-pulse"></i>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-saffron-500 animate-ping"></div>
+                                    <span class="text-[9px] text-saffron-400 font-black uppercase tracking-[0.2em]">Sacred Stream Active</span>
+                                </div>
+                                <span class="text-[9px] text-white/30 font-bold uppercase tracking-widest">256kbps HD</span>
                             </div>
-                            <div>
-                                <p class="text-[10px] text-saffron-400 font-bold uppercase tracking-widest">Temple Hymn</p>
-                                <p class="text-white font-bold text-sm truncate">{{ $temple->idleSong->title }}</p>
-                            </div>
+                            <button 
+                                onclick="playGlobalSong('{{ asset('storage/' . $temple->idleSong->file_path) }}', '{{ addslashes($temple->idleSong->title) }}', '{{ addslashes($temple->idleSong->singer ?? 'Sacred Artist') }}', this)"
+                                class="w-full flex items-center justify-between bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl p-4 transition-all group">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded-xl bg-saffron-500/20 flex items-center justify-center text-saffron-400 group-hover:scale-110 transition-transform">
+                                        <i data-lucide="play-circle" class="w-6 h-6"></i>
+                                    </div>
+                                    <div class="text-left">
+                                        <p class="text-xs font-bold text-white tracking-wide">Listen to Hymn</p>
+                                        <p class="text-[10px] text-white/40 uppercase tracking-widest">Click to start</p>
+                                    </div>
+                                </div>
+                                <i data-lucide="volume-2" class="w-4 h-4 text-white/20 group-hover:text-saffron-500 transition-colors"></i>
+                            </button>
                         </div>
-                        <audio controls class="w-full h-8 opacity-40 hover:opacity-100 transition-opacity">
-                            <source src="{{ asset('storage/' . $temple->idleSong->file_path) }}" type="audio/mpeg">
-                        </audio>
                     </div>
                 @endif
             </div>
@@ -164,6 +174,9 @@
     </section>
 
     @if($temple->idleSong)
+        @push('head')
+            <link rel="preload" href="{{ asset('storage/' . $temple->idleSong->file_path) }}" as="audio">
+        @endpush
         <script>
             window.addEventListener('click', function () {
                 if (window.playGlobalSong) {

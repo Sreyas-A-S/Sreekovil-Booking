@@ -87,6 +87,9 @@
     </section>
 
     @if($homepageSong)
+        @push('head')
+            <link rel="preload" href="{{ asset('storage/' . $homepageSong->file_path) }}" as="audio">
+        @endpush
         <script>
             window.addEventListener('click', function () {
                 if (window.playGlobalSong) {
