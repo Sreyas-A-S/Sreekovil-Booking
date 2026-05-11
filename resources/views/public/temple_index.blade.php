@@ -6,9 +6,9 @@
     <!-- Header -->
     <section class="relative pt-40 pb-28 flex items-center justify-center overflow-hidden">
         <div class="absolute inset-0"
-            style="background-image: linear-gradient(to bottom, rgba(255, 153, 51, 0.6), rgba(230, 92, 0, 0.85)), url('{{ asset('assets/hero-bg.png') }}'); background-size: cover; background-position: center;">
+            style="background-image: linear-gradient(to bottom, rgba(45, 16, 5, 0.4), rgba(230, 92, 0, 0.5)), url('{{ asset('assets/sreekovil-banner-sldier-01.jpg.jpeg') }}'); background-size: cover; background-position: center;">
         </div>
-        <div class="absolute inset-0 mandala-overlay opacity-30 rotate-12 scale-150 mix-blend-overlay"></div>
+        <div class="absolute inset-0 mandala-overlay opacity-15 rotate-12 scale-150 mix-blend-overlay"></div>
         
         <div class="max-w-7xl mx-auto px-8 md:px-6 relative z-10 text-center space-y-4">
             <p class="text-saffron-300 font-bold text-xs uppercase tracking-[0.4em] animate-fade-in drop-shadow-sm">
@@ -35,10 +35,10 @@
                     class="absolute inset-0 bg-saffron-500/10 blur-2xl group-hover:bg-saffron-500/20 transition-all duration-500 rounded-full">
                 </div>
                 <div
-                    class="relative flex items-center p-1.5 bg-white/95 backdrop-blur-xl rounded-full shadow-[0_30px_100px_rgba(0,0,0,0.1)] border border-maroon-100/50 overflow-hidden group-focus-within:border-saffron-500/30 transition-all">
+                    class="relative flex items-center p-1.5 bg-white rounded-full shadow-[0_30px_100px_rgba(0,0,0,0.1)] border border-orange-100 overflow-hidden group-focus-within:border-saffron-500 transition-all">
                     <input type="text" name="search" value="{{ $search ?? '' }}" autocomplete="off"
                         placeholder="Search temples..."
-                        class="search-input-suggest flex-1 bg-transparent border-0 text-maroon-900 placeholder-maroon-300 focus:ring-0 focus:outline-none outline-none px-6 md:px-8 py-4 md:py-5 text-sm md:text-lg font-medium ring-0">
+                        class="search-input-suggest flex-1 bg-transparent border-0 text-orange-950 placeholder-orange-950/40 focus:ring-0 focus:outline-none outline-none px-6 md:px-8 py-4 md:py-5 text-sm md:text-lg font-medium ring-0">
 
                     <button type="submit"
                         class="px-6 md:px-10 py-4 saffron-gradient text-white font-bold rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all text-[10px] md:text-xs uppercase tracking-widest shrink-0">

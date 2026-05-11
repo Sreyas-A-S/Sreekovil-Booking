@@ -180,7 +180,7 @@
         }
     </style>
     <!-- Navigation -->
-    <nav class="fixed top-0 left-0 right-0 z-[100] transition-all duration-500 py-4 bg-orange-950 shadow-lg" id="main-nav">
+    <nav class="fixed top-0 left-0 right-0 z-[100] transition-all duration-500 py-4 bg-transparent" id="main-nav">
         <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
             <a href="/" class="flex items-center gap-4 group">
                 <img src="{{ asset('assets/sreekovil-white-logo.png') }}" alt="Sreekovil"
@@ -423,6 +423,18 @@
             div.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
             div.classList.remove('opacity-100', 'translate-y-0');
         }
+
+        // Navbar Scroll Logic
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('main-nav');
+            if (window.scrollY > 50) {
+                nav.classList.remove('bg-transparent', 'py-4');
+                nav.classList.add('bg-orange-950/90', 'backdrop-blur-md', 'shadow-lg', 'py-3');
+            } else {
+                nav.classList.add('bg-transparent', 'py-4');
+                nav.classList.remove('bg-orange-950/90', 'backdrop-blur-md', 'shadow-lg', 'py-3');
+            }
+        });
     </script>
 </body>
 
