@@ -15,7 +15,7 @@ class PublicController extends Controller
     public function home()
     {
         $temples = Temple::latest()->take(6)->get(['id', 'name', 'slug', 'location', 'photos']);
-        $homepageSongId = Setting::getValue('homepage_song_id');
+        $homepageSongId = Setting::where('key', 'homepage_song_id')->value('value');
         $homepageSong = $homepageSongId ? Song::find($homepageSongId) : null;
 
         $heroStatsMode = Setting::getValue('hero_stats_mode', 'text');

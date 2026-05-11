@@ -435,7 +435,14 @@
         const globalAudio = document.getElementById('global-audio-element');
 
         function playGlobalSong(src, title, artist, btn = null) {
-            if (globalAudio.src === src) {
+            // Robust URL comparison for production
+            let currentPath = '';
+            try { currentPath = globalAudio.src ? new URL(globalAudio.src).pathname : ''; } catch(e) {}
+            
+            let newPath = '';
+            try { newPath = src ? new URL(src, window.location.origin).pathname : ''; } catch(e) {}
+
+            if (currentPath === newPath && currentPath !== '') {
                 if (globalAudio.paused) globalAudio.play();
                 else globalAudio.pause();
                 return;
