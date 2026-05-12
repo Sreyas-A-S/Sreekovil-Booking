@@ -91,12 +91,32 @@
             <link rel="preload" href="{{ asset('storage/' . $homepageSong->file_path) }}" as="audio">
         @endpush
         <script>
-            window.addEventListener('click', function () {
+            const startDivineAudio = () => {
                 if (window.playGlobalSong) {
                     window.playGlobalSong("{{ asset('storage/' . $homepageSong->file_path) }}", "{{ addslashes($homepageSong->title) }}", "{{ addslashes($homepageSong->singer ?? 'Unknown Artist') }}");
                 }
-            }, { once: true });
+            };
+
+            // Attempt to play on load (works if user has interacted with site before)
+            window.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => {
+                    const audio = document.getElementById('global-audio-element');
+                    if (window.playGlobalSong) {
+                        const playPromise = window.playGlobalSong("{{ asset('storage/' . $homepageSong->file_path) }}", "{{ addslashes($homepageSong->title) }}", "{{ addslashes($homepageSong->singer ?? 'Unknown Artist') }}");
+                        
+                        if (playPromise instanceof Promise) {
+                            playPromise.catch(() => {
+                                console.log("🕉️ Sreekovil: Autoplay blocked. Music will start on first click.");
+                                window.addEventListener('click', startDivineAudio, { once: true });
+                                window.addEventListener('scroll', startDivineAudio, { once: true });
+                            });
+                        }
+                    }
+                }, 1000); // Small delay to ensure layout script is ready
+            });
         </script>
+    @else
+        <script>console.warn("🕉️ Sreekovil: No homepage song configured.");</script>
     @endif
 
     <!-- Stats / Highlights -->

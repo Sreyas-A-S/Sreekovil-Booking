@@ -432,9 +432,13 @@
 
     <script>
         // Global Music Player Logic (Background Only)
-        const globalAudio = document.getElementById('global-audio-element');
-
-        function playGlobalSong(src, title, artist, btn = null) {
+        window.playGlobalSong = function(src, title, artist, btn = null) {
+            console.log("🕉️ Sreekovil: playGlobalSong called for:", title);
+            const globalAudio = document.getElementById('global-audio-element');
+            if (!globalAudio) {
+                console.error("🕉️ Sreekovil Error: Audio element #global-audio-element missing!");
+                return;
+            }
             // Robust URL comparison for production
             let currentPath = '';
             try { currentPath = globalAudio.src ? new URL(globalAudio.src).pathname : ''; } catch(e) {}
@@ -457,11 +461,12 @@
             const playPromise = globalAudio.play();
             if (playPromise !== undefined) {
                 playPromise.then(_ => {
-                    console.log("Divine audio streaming in background...");
+                    console.log("🕉️ Sreekovil: Divine audio streaming...");
                 }).catch(error => {
-                    console.log("Autoplay prevented. Waiting for interaction.");
+                    // Handled by caller
                 });
             }
+            return playPromise;
         }
 
         function togglePlayPause() {
