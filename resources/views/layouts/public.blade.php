@@ -447,14 +447,20 @@
             try { newPath = src ? new URL(src, window.location.origin).pathname : ''; } catch(e) {}
 
             if (currentPath === newPath && currentPath !== '') {
-                if (globalAudio.paused) globalAudio.play();
-                else globalAudio.pause();
+                if (globalAudio.paused) {
+                    globalAudio.play();
+                } else if (btn) {
+                    // Only toggle to pause if explicitly clicked via a button
+                    globalAudio.pause();
+                }
                 return;
             }
 
             // Optimized Loading Logic for any format (mp3, wav, ogg, etc.)
             globalAudio.pause();
             globalAudio.src = src; 
+            globalAudio.dataset.title = title;
+            globalAudio.dataset.artist = artist;
             globalAudio.load(); 
 
             // Attempt Autoplay
@@ -462,6 +468,7 @@
             if (playPromise !== undefined) {
                 playPromise.then(_ => {
                     console.log("🕉️ Sreekovil: Divine audio streaming...");
+                    saveAudioState();
                 }).catch(error => {
                     // Handled by caller
                 });
@@ -469,15 +476,56 @@
             return playPromise;
         }
 
-        function togglePlayPause() {
-            if (!globalAudio.src) return;
-            if (globalAudio.paused) globalAudio.play();
-            else globalAudio.pause();
-        }
-
         function setPlayerVolume(val) {
             globalAudio.volume = val;
+            localStorage.setItem('sreekovil_audio_volume', val);
         }
+
+        // Persistence Logic
+        const globalAudio = document.getElementById('global-audio-element');
+        
+        // Save state
+        const saveAudioState = () => {
+            if (globalAudio.src) {
+                localStorage.setItem('sreekovil_audio_state', JSON.stringify({
+                    src: globalAudio.src,
+                    time: globalAudio.currentTime,
+                    paused: globalAudio.paused,
+                    title: globalAudio.dataset.title,
+                    artist: globalAudio.dataset.artist,
+                    timestamp: Date.now()
+                }));
+            }
+        };
+
+        globalAudio.addEventListener('timeupdate', () => {
+            // Save every 2 seconds to avoid overhead
+            if (Math.floor(globalAudio.currentTime) % 2 === 0) saveAudioState();
+        });
+        globalAudio.addEventListener('play', saveAudioState);
+        globalAudio.addEventListener('pause', saveAudioState);
+        window.addEventListener('beforeunload', saveAudioState);
+
+        // Resume state
+        window.addEventListener('DOMContentLoaded', () => {
+            const saved = localStorage.getItem('sreekovil_audio_state');
+            const savedVolume = localStorage.getItem('sreekovil_audio_volume');
+            
+            if (savedVolume) globalAudio.volume = parseFloat(savedVolume);
+            else globalAudio.volume = 0.5; // Default volume
+
+            if (saved) {
+                const state = JSON.parse(saved);
+                // Only resume if it was playing and not too old (e.g. within 30 mins)
+                if (!state.paused && (Date.now() - state.timestamp < 1800000)) {
+                    // Small delay to let page scripts load
+                    setTimeout(() => {
+                        window.playGlobalSong(state.src, state.title, state.artist);
+                        globalAudio.currentTime = state.time;
+                    }, 500);
+                }
+            }
+        });
     </script>
 </body>
 

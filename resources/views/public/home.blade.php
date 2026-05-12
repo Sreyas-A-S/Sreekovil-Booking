@@ -106,9 +106,16 @@
                         
                         if (playPromise instanceof Promise) {
                             playPromise.catch(() => {
-                                console.log("🕉️ Sreekovil: Autoplay blocked. Music will start on first click.");
-                                window.addEventListener('click', startDivineAudio, { once: true });
-                                window.addEventListener('scroll', startDivineAudio, { once: true });
+                                console.log("🕉️ Sreekovil: Autoplay blocked. Music will start on first interaction.");
+                                const playOnInteraction = () => {
+                                    startDivineAudio();
+                                    window.removeEventListener('click', playOnInteraction);
+                                    window.removeEventListener('scroll', playOnInteraction);
+                                    window.removeEventListener('touchstart', playOnInteraction);
+                                };
+                                window.addEventListener('click', playOnInteraction);
+                                window.addEventListener('scroll', playOnInteraction);
+                                window.addEventListener('touchstart', playOnInteraction);
                             });
                         }
                     }
