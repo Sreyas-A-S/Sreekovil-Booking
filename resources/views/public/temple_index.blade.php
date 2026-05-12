@@ -4,11 +4,14 @@
 
 @section('content')
     <!-- Header -->
-    <section class="relative pt-40 pb-28 flex items-center justify-center overflow-hidden">
-        <div class="absolute inset-0"
-            style="background-image: linear-gradient(to bottom, rgba(45, 16, 5, 0.4), rgba(230, 92, 0, 0.5)), url('{{ asset('assets/sreekovil-banner-sldier-01.jpg.jpeg') }}'); background-size: cover; background-position: center;">
+    <section class="relative min-h-[50vh] pt-40 pb-32 flex items-center justify-center overflow-visible z-[50]">
+        <!-- Background Wrapper (to prevent mandala overflow) -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute inset-0"
+                style="background-image: linear-gradient(to bottom, rgba(45, 16, 5, 0.4), rgba(230, 92, 0, 0.5)), url('{{ asset('assets/sreekovil-banner-sldier-01.jpg.jpeg') }}'); background-size: cover; background-position: center;">
+            </div>
+            <div class="absolute inset-0 mandala-overlay opacity-15 rotate-12 scale-150 mix-blend-overlay"></div>
         </div>
-        <div class="absolute inset-0 mandala-overlay opacity-15 rotate-12 scale-150 mix-blend-overlay"></div>
         
         <div class="max-w-7xl mx-auto px-8 md:px-6 relative z-10 text-center space-y-4">
             <p class="text-saffron-300 font-bold text-xs uppercase tracking-[0.4em] animate-fade-in drop-shadow-sm">
@@ -25,23 +28,17 @@
                 @endif
             </h1>
         </div>
-    </section>
 
-    <!-- Search/Filter -->
-    <section class="relative z-30 -mt-10 px-8 md:px-6">
-        <div class="max-w-3xl mx-auto">
+        <!-- Floating Search Bar (Exactly like Homepage) -->
+        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-full max-w-4xl px-4 z-40 animate-slide-up">
             <form action="{{ route('public.temple.index') }}" method="GET" class="relative group">
-                <div
-                    class="absolute inset-0 bg-saffron-500/10 blur-2xl group-hover:bg-saffron-500/20 transition-all duration-500 rounded-full">
-                </div>
-                <div
-                    class="relative flex items-center p-1.5 bg-white rounded-full shadow-[0_30px_100px_rgba(0,0,0,0.1)] border border-orange-100 overflow-hidden group-focus-within:border-saffron-500 transition-all">
+                <div class="absolute inset-0 bg-saffron-500/10 blur-3xl group-hover:bg-saffron-500/20 transition-all duration-500 rounded-full"></div>
+                <div class="relative flex items-center p-1.5 bg-white border border-white rounded-full shadow-2xl overflow-hidden group-focus-within:border-saffron-500 transition-all">
                     <input type="text" name="search" value="{{ $search ?? '' }}" autocomplete="off"
                         placeholder="Search temples..."
-                        class="search-input-suggest flex-1 bg-transparent border-0 text-orange-950 placeholder-orange-950/40 focus:ring-0 focus:outline-none outline-none px-6 md:px-8 py-4 md:py-5 text-sm md:text-lg font-medium ring-0">
-
+                        class="search-input-suggest flex-1 bg-transparent border-0 text-orange-950 placeholder-orange-950/40 focus:ring-0 focus:outline-none outline-none px-4 md:px-8 py-3 md:py-4 text-xs md:text-lg font-medium ring-0">
                     <button type="submit"
-                        class="px-6 md:px-10 py-4 saffron-gradient text-white font-bold rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all text-[10px] md:text-xs uppercase tracking-widest shrink-0">
+                        class="px-5 md:px-12 py-3 md:py-4 saffron-gradient text-white font-bold rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all text-[9px] md:text-xs uppercase tracking-[0.2em]">
                         Search
                     </button>
                 </div>
