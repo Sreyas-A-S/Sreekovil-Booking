@@ -439,7 +439,7 @@
         let currentSrc = null;
         let isPlaying = false;
 
-        const initAudioCtx = () => {
+        const initAudioCtx = async () => {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 gainNode = audioCtx.createGain();
@@ -447,15 +447,24 @@
                 gainNode.gain.value = savedVolume ? parseFloat(savedVolume) : 0.5;
                 gainNode.connect(audioCtx.destination);
             }
+            
             if (audioCtx.state === 'suspended') {
-                return audioCtx.resume();
+                await audioCtx.resume();
             }
-            return Promise.resolve();
+
+            if (audioCtx.state === 'suspended') {
+                throw new Error('User gesture required');
+            }
         };
 
         window.playGlobalSong = async function(src, title, artist, btn = null) {
-            console.log("🕉️ Sreekovil: Attempting to stream divine hymn...", title);
-            await initAudioCtx();
+            try {
+                await initAudioCtx();
+                console.log("🕉️ Sreekovil: Streaming divine hymn...", title || 'Persistent Stream');
+            } catch (e) {
+                // If it's a gesture error, we return a rejected promise so auto-play logic knows to wait
+                return Promise.reject(e);
+            }
 
             if (currentSrc === src && isPlaying && btn) {
                 stopAudio();
@@ -464,23 +473,20 @@
 
             if (currentSrc === src && isPlaying) return;
 
-            return new Promise(async (resolve, reject) => {
-                try {
-                    if (currentSrc !== src) {
-                        currentSrc = src;
-                        const response = await fetch(src);
-                        const arrayBuffer = await response.arrayBuffer();
-                        audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
-                    }
-
-                    startAudio();
-                    saveAudioState();
-                    resolve();
-                } catch (e) {
-                    console.error("🕉️ Sreekovil: Divine Connection Error", e);
-                    reject(e);
+            try {
+                if (currentSrc !== src) {
+                    currentSrc = src;
+                    const response = await fetch(src);
+                    const arrayBuffer = await response.arrayBuffer();
+                    audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
                 }
-            });
+
+                startAudio();
+                saveAudioState();
+            } catch (e) {
+                console.error("🕉️ Sreekovil: Divine Connection Error", e);
+                throw e;
+            }
         }
 
         function startAudio(offset = 0) {
