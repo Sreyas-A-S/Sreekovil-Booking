@@ -433,24 +433,30 @@
         let audioCtx = null;
         let audioBuffer = null;
         let sourceNode = null;
-        let startTime = 0; // When the current playback started
-        let offsetTime = 0; // Current position in the song
+        let gainNode = null;
+        let startTime = 0; 
+        let offsetTime = 0; 
         let currentSrc = null;
         let isPlaying = false;
 
         const initAudioCtx = () => {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                gainNode = audioCtx.createGain();
+                const savedVolume = localStorage.getItem('sreekovil_audio_volume');
+                gainNode.gain.value = savedVolume ? parseFloat(savedVolume) : 0.5;
+                gainNode.connect(audioCtx.destination);
             }
             if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
+                return audioCtx.resume();
             }
+            return Promise.resolve();
         };
 
         window.playGlobalSong = async function(src, title, artist, btn = null) {
-            initAudioCtx();
+            console.log("🕉️ Sreekovil: Attempting to stream divine hymn...", title);
+            await initAudioCtx();
 
-            // Toggle logic for buttons
             if (currentSrc === src && isPlaying && btn) {
                 stopAudio();
                 return;
@@ -458,30 +464,34 @@
 
             if (currentSrc === src && isPlaying) return;
 
-            try {
-                if (currentSrc !== src) {
-                    currentSrc = src;
-                    const response = await fetch(src);
-                    const arrayBuffer = await response.arrayBuffer();
-                    audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
-                }
+            return new Promise(async (resolve, reject) => {
+                try {
+                    if (currentSrc !== src) {
+                        currentSrc = src;
+                        const response = await fetch(src);
+                        const arrayBuffer = await response.arrayBuffer();
+                        audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+                    }
 
-                startAudio();
-                saveAudioState();
-            } catch (e) {
-                console.error("🕉️ Sreekovil: Audio Engine Error", e);
-            }
+                    startAudio();
+                    saveAudioState();
+                    resolve();
+                } catch (e) {
+                    console.error("🕉️ Sreekovil: Divine Connection Error", e);
+                    reject(e);
+                }
+            });
         }
 
         function startAudio(offset = 0) {
             if (!audioBuffer || !audioCtx) return;
             
-            if (sourceNode) sourceNode.stop();
+            if (sourceNode) try { sourceNode.stop(); } catch(e) {}
             
             sourceNode = audioCtx.createBufferSource();
             sourceNode.buffer = audioBuffer;
             sourceNode.loop = true;
-            sourceNode.connect(audioCtx.destination);
+            sourceNode.connect(gainNode);
             
             offsetTime = offset;
             startTime = audioCtx.currentTime - offsetTime;
@@ -491,7 +501,7 @@
 
         function stopAudio() {
             if (sourceNode) {
-                sourceNode.stop();
+                try { sourceNode.stop(); } catch(e) {}
                 sourceNode = null;
             }
             isPlaying = false;
@@ -499,11 +509,10 @@
         }
 
         function setPlayerVolume(val) {
-            // Volume control for AudioContext could be added via GainNode if needed
+            if (gainNode) gainNode.gain.value = val;
             localStorage.setItem('sreekovil_audio_volume', val);
         }
 
-        // Persistence Logic
         const saveAudioState = () => {
             if (currentSrc) {
                 const currentPos = isPlaying ? (audioCtx.currentTime - startTime) % (audioBuffer ? audioBuffer.duration : 1) : offsetTime;
@@ -524,20 +533,17 @@
             if (saved) {
                 const state = JSON.parse(saved);
                 if (!state.paused && (Date.now() - state.timestamp < 1800000)) {
-                    const resume = () => {
-                        window.playGlobalSong(state.src);
-                        // We set offset after loading
-                        setTimeout(() => {
-                            if (isPlaying) {
-                                // The playGlobalSong already starts it, but we might need to adjust time
-                                // In a more robust version, we'd pass offset to playGlobalSong
-                            }
-                        }, 1000);
-                        window.removeEventListener('click', resume);
-                        window.removeEventListener('scroll', resume);
+                    const resume = async () => {
+                        try {
+                            await window.playGlobalSong(state.src);
+                            window.removeEventListener('click', resume);
+                            window.removeEventListener('scroll', resume);
+                            window.removeEventListener('touchstart', resume);
+                        } catch(e) {}
                     };
                     window.addEventListener('click', resume);
                     window.addEventListener('scroll', resume);
+                    window.addEventListener('touchstart', resume);
                 }
             }
         });
