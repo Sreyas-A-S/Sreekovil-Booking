@@ -4,7 +4,7 @@
 
 @section('content')
     <!-- Header -->
-    <section class="relative min-h-[50vh] pt-40 pb-32 flex items-center justify-center overflow-visible z-[50]">
+    <section class="relative min-h-[50vh] md:min-h-[60vh] pt-40 md:pt-48 pb-32 md:pb-40 flex items-center justify-center overflow-visible z-[50]">
         <!-- Background Wrapper (to prevent mandala overflow) -->
         <div class="absolute inset-0 overflow-hidden">
             <div class="absolute inset-0"

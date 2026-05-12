@@ -2,7 +2,7 @@
 
 @section('content')
     <!-- Hero Section -->
-    <section class="relative min-h-[50vh] min-h-[50svh] overflow-visible pt-40 pb-32 flex items-center justify-center z-[50]">
+    <section class="relative min-h-[50vh] md:min-h-[65vh] min-h-[50svh] md:min-h-[65svh] overflow-visible pt-40 md:pt-52 pb-32 md:pb-44 flex items-center justify-center z-[50]">
         <div class="absolute inset-0 hero-gradient"
             style="background-image: linear-gradient(to bottom, rgba(45, 16, 5, 0.6) 0%, rgba(255, 153, 51, 0.2) 50%, rgba(230, 92, 0, 0.6) 100%), url('{{ asset('assets/sreekovil-banner-sldier-01.jpg.jpeg') }}'); background-size: cover; background-position: center;">
         </div>
